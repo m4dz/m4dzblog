@@ -9,20 +9,20 @@ lang: fr
 
 _J'ose espérer que Desproges me pardonnera cet odieu repompage, mais que voulez-vous, on ne se refait pas…_
 
-Il y a peu, [@nhoizey](https://twitter.com/nhoizey) se posait sur twitter [l'intérêt de versionner le répertoire de _build_](https://twitter.com/nhoizey/statuses/480039702285008896) dans nos projets, quand celui-ci ne contient finalement que la version distribuable de nos applications, sans aucune valeur ajoutée.
+Il y a peu, [@nhoizey](https://twitter.com/nhoizey) se posait la question de [l'intérêt de versionner le répertoire de _build_](https://twitter.com/nhoizey/statuses/480039702285008896) dans nos projets, quand celui-ci ne contient finalement que la version distribuable de nos applications, sans aucune valeur ajoutée.
 
-[Ma réponse](https://twitter.com/m4d_z/statuses/480056775551758336) a tenu en un tweet : pour publier sur une autre branche avec _subtree_. Là, visiblement, j'en ai perdu plusieurs sur ce coup-ci. C'est donc l'occasion de vous expliquer rapidement ce qui constitue, à mon avis, un workflow de publication propre, simple et efficace[^desproges].
+[Ma réponse](https://twitter.com/m4d_z/statuses/480056775551758336) a tenue en un tweet : pour publier sur une autre branche avec _subtree_. Là, visiblement,  sur ce coup-ci j'en ai perdu plusieurs. C'est donc l'occasion de vous expliquer rapidement ce qui constitue, à mon avis, un _workflow_ de publication propre, simple et efficace[^desproges].
 
 ## C'est quoi, un workflow ?
 
-C'est peut-être bien par là qu'il faut commencer. Un workflow, ce sera l'ensemble des régles et procédures qui vont diriger vos méthodes de travail. Celle-ci vont pouvoir être rejouées indéfiniment pour obtenir des résultats identiques. Vous allez normalement pouvoir les automatiser ; mais surtout, elles font partie intégrante de la brique de **confiance** de votre processus de travail. C'est grâce à ce workflow que vous aller pouvoir garantir une partie de la qualité de ce que vous produisez.
+C'est peut-être bien par là qu'il faut commencer. Un _workflow_, ce sera l'ensemble des règles et procédures qui vont diriger vos méthodes de travail. Celle-ci vont pouvoir être rejouées indéfiniment pour obtenir des résultats identiques. Vous allez normalement pouvoir les automatiser ; mais surtout, elles font partie intégrante de la brique de **confiance** de votre processus de travail. C'est grâce à ce _workflow_ que vous allez pouvoir garantir une partie de la qualité de ce que vous produisez.
 
-Dans notre cas, nous nous intéressons au développement d'une _webapp_, probablement de type SPA[^spa]. Le workflow associé devrait respecter les points suivants :
+Dans notre cas, nous nous intéressons au développement d'une _webapp_, probablement de type SPA[^spa]. Le _workflow_ associé devrait respecter les points suivants :
 
-* offrir une branche _master_ propre, sinon stable, qui puisse servir de base à toute nouvelle branche, ou à tout nouveau _fork_ (qui n'est jamais qu'une branche, en soi)
-* respecter une procédure de [taggage sémantique des versions](http://semver.org/lang/fr/)
-* ne pas parasiter les branches de code inutile, comme les résultats de pré-compilation ou les sources distribuables
-* utiliser une procédure de déploiement continu
+* offrir une branche _master_ propre, sinon stable, qui puisse servir de base à toute nouvelle branche, ou à tout nouveau _fork_ (qui n'est jamais qu'une branche, en soi) ;
+* respecter une procédure de [taggage sémantique](http://semver.org/lang/fr/) des versions ;
+* ne pas parasiter les branches de code inutile, comme les résultats de pré-compilation ou les sources distribuables ;
+* utiliser une procédure de déploiement continu.
 
 Ces quelques pré-requis simples vont nous servir de base pour assurer la solidité de notre processus.
 
@@ -58,9 +58,9 @@ J'ai fait simple en ne mettant que les éléments indispensables, votre projet s
 
 Bon, nous avons notre structure, développons ! Il va falloir respecter quelques bonnes pratiques en terme de nommage de branches :
 
-* master : c'est la version de base de chacune des branches de développement. Elle se doit d'être au moins propre, au mieux stable (nous nous plaçons dans un contexte _open-source_) ;
-* feature-<name> : les fonctionnalités sont développées en sandbox dans des branches dédiées. Ce fonctionnement va vous permettre de travailler sur plusieurs fonctionnalitées simultanément sans vous parasiter ;
-* release : votre branche de publication, j'y reviens après.
+* `master` : c'est la version de base de chacune des branches de développement. Elle se doit d'être au moins propre, au mieux stable (nous nous plaçons dans un contexte _open-source_) ;
+* `feature-<name>` : les fonctionnalités sont développées en _sandbox_ dans des branches dédiées. Ce fonctionnement va vous permettre de travailler sur plusieurs fonctionnalitées simultanément sans vous parasiter ;
+* `release` : votre branche de publication, j'y reviens après.
 
 Donc, tout développement part d'une branche master propre. Celle-ci ne contient **jamais** le répertoire `dist`. Celui-ci n'est dédié qu'à la publication. Vous allez donc développer un nouvelle fonctionnalité (au hasard : `login`) en tirant une nouvelle branche depuis le master :
 
@@ -68,11 +68,11 @@ Donc, tout développement part d'une branche master propre. Celle-ci ne contient
 git checkout -b feature-login master
 ```
 
-Lors de votre développement, vous allez devoir tester votre travail. Vous allez probablement utiliser un tasker (comme [grunt](http://gruntjs.com/) ou [gulp](http://gulpjs.com/) par exemple) chargé d'effectuer des tâches de `watch`, `livereload`, `test`… Ces tâches vont compiler et tester votre code vers un répertoire `.tmp` qui ne sera **pas** versionné (il est dans le `.gitignore` du projet). De cette façon, vous ne polluerez jamais vos branches de code jetable.
+Lors de votre développement, vous allez devoir tester votre travail. Vous utiliserez probablement un _task runner_ (comme [grunt](http://gruntjs.com/) ou [gulp](http://gulpjs.com/) par exemple) chargé d'effectuer des tâches de `watch`, `livereload`, `test`… Ces tâches vont compiler et tester votre code vers un répertoire `.tmp` qui ne sera **pas** versionné (il est dans le `.gitignore` du projet). De cette façon, vous ne polluerez jamais vos branches avec du code jetable.
 
 ## Stabilisation
 
-Féliciations ! Vous venez de terminer votre fonctionnalité. Il est temps de la reverser dans le master pour l'inclure dans le _base trunk_. Selon que vous souhaiterez conserver ou non l'historique de développement, vous opterez pour un `rebase` ou un `merge` (avec ou sans `ff`). Je vous conseille de votre reporter à l'excellent article de Christophe concernant ce choix décisif souvent mal compris sur le [choix entre `merge` et `rebase`](http://www.git-attitude.fr/2014/05/04/bien-utiliser-git-merge-et-rebase/).
+Féliciations ! Vous venez de terminer votre fonctionnalité. Il est temps de la reverser dans le master pour l'inclure dans le _base trunk_. Selon que vous souhaiterez conserver ou non l'historique de développement, vous opterez pour un `rebase` ou un `merge` (avec ou sans `ff`). Je vous conseille de votre reporter à l'excellent article de Christophe concernant décision souvent mal comprise du [choix entre `merge` et `rebase`](http://www.git-attitude.fr/2014/05/04/bien-utiliser-git-merge-et-rebase/).
 
 A ce niveau, nous n'avons toujours que notre code source et nos fichiers de configuration qui sont versionnés, aucun code jetable paraiste n'est présent[^karma].
 
@@ -87,13 +87,13 @@ git checkout master
 git tag v0.1.0
 ```
 
-Hop ! Vos versions sont isolées dans des tags, ce qui d'une part montre que votre projet est proprement mené, et d'autre part vous permettra de repatir de ce tag pour une nouvelle branche en cas de besoin (comme de réaliser des quick-fix, j'en parle ensuite).
+Hop ! Vos versions sont isolées dans des tags, ce qui d'une part montre que votre projet est proprement mené, et d'autre part vous permettra de repatir de ce tag pour une nouvelle branche en cas de besoin (comme de réaliser des _quick-fix_, j'en parle ensuite).
 
 ## Livraison
 
-Vous avez vore `master` propre et vos tags correctement versionés. Il est temps de réaliser la livraison associée. Pour ça, nous allons passer par une branche spécifique, nommée `release`. Dans cette branche, nous allons verser le tag de la version à livrer, puis exécuter une tâche de _build_. Cette tâche, contrairement à celles de dev (`watch`, `livreload`…) va produire du code compilé dans le répertoire `dist`.
+Vous avez votre `master` propre et vos tags correctement versionnés. Il est temps de réaliser la livraison associée. Pour ça, nous allons passer par une branche spécifique, nommée `release`. Dans cette branche, nous allons verser le tag de la version à livrer, puis exécuter une tâche de _build_. Cette tâche, contrairement à celles de dev (`watch`, `livreload`…) va produire du code compilé dans le répertoire `dist`.
 
-Pourquoi ? Simplement parce que nous en aurons besoin pour le déploiement continu. Mais nous ne souhaitons pas publier du code parasite jetable et `dist`ne va contenir aucune valeur ajoutée : il est uniquement la résultante de la compilation de vos sources. Il s'agit là d'un compromis : nous en avons besoin pour la suite, mais nous ne souhaitons pas polluer nos branches avec. Nous l'isolons donc uniquement dans la branche de `release`. C'est pour cette raison que nous ne lançons la tâche de _build_ que **depuis cette branche**.
+Pourquoi ? Simplement parce que nous en aurons besoin pour le déploiement continu. Mais nous ne souhaitons pas publier du code parasite jetable et `dist` ne va contenir aucune valeur ajoutée : il est uniquement la résultante de la compilation de vos sources. Il s'agit là d'un compromis : nous en avons besoin pour la suite, mais nous ne souhaitons pas polluer nos branches avec. Nous l'isolons donc uniquement dans la branche de `release`. C'est pour cette raison que nous ne lançons la tâche de _build_ que **depuis cette branche**.
 
 _ProTipTime_ : Si vous voulez être sûrs de vous, vous pouvez rajouter une sécurité à votre tâche en controllant la branche courante : si vous lancez un `build` depuis une autre branche que `release` la compilation ne s'éxécutera pas et votre tasker retournera une erreur.
 
@@ -141,13 +141,15 @@ Hop, du code propre à tous les étages, et des procédures bien isolées :).
 
 Bon, ça c'est l'idéal. Dans la réalité, il arrive (fréquemment ?) que nous poussions du code en production, mais que nous constations, un peu tard[^lafontaine], qu'un bug nous est passé sous le nez…
 
-Dans ce cas, je vous conseille de faire partir une branche depuis votre tag publié (pratique, hein ?), de réaliser vos corrections, puis de marquer un nouveau tag sur cette base une fois le tout corrigé. S'en suit la procédure habituelle : `release > build > déploy`, comme précédemment.
+Dans ce cas, je vous conseille de faire partir une branche depuis votre tag publié (pratique, hein ?), de réaliser vos corrections, puis de marquer un nouveau tag sur cette base une fois le tout corrigé. S'en suit la procédure habituelle : `release > build > deploy`, comme précédemment.
 
 Eventuellement, vous pourriez repartir de la branche `release` pour réaliser un _quickwin_ (une correction en 1 commit), mais veillez dans ce cas à _cherry-picker_ votre commit vers `master` pour le reporter vers le _base trunk_ sans importer au passage le répertoire `dist` que nous ne voulons pas voir en dehors de `relase` (beurk beurk…).
 
 ## Pour aller encore plus loin
 
-Si vous voulez vous amuser encore un peu, je vous propose d'automatiser la procédure de `build > deploy` avec un outil d'intégration continue comme [Travis](https://travis-ci.org/). En ajoutant cette brique, vous n'avez plus qu'à merger votre tag dans la branche `release` et à repouser celle-ci vers le dépôt central. Travis (ou votre outil d'intégration continue) va écouter cette branche, la récupérer, lancer la tâche de _build_, pousser le contenu du `dist` ainsi obtenu vers la branche de déploiement (`gh-pages`) et repousser cette dernière vers le dépôt central. **COMBO!**
+Si vous voulez vous amuser encore un peu, je vous propose d'automatiser la procédure de `build > deploy` avec un outil d'intégration continue comme [Travis](https://travis-ci.org/). En ajoutant cette brique, vous n'avez plus qu'à merger votre tag dans la branche `release` et à repouser celle-ci vers le dépôt central. Travis (ou votre outil d'intégration continue) va écouter cette branche, la récupérer, lancer la tâche de _build_, pousser le contenu du `dist` ainsi obtenu vers la branche de déploiement (`gh-pages`) et repousser cette dernière vers le dépôt central.
+
+**COMBO!**
 
 Avec cette procédure, vous ne lancez jamais manuellement le _build_, c'est la CI qui s'en charge. Tout ce qui vous incombe reste de verser le bon tag dans la branche de _release_. Vous gagnez encore des points de confiance[^mage].
 
