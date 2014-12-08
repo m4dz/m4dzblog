@@ -1,16 +1,17 @@
 ---
 layout: post
-title: "Peinture en cours"
-date: 2013-02-04 21:45
-comments: false
-categories: en-vrac, outils
+title: Peinture en cours
+lang: fr
+category: blog
+tags:
+- tools
 ---
 
 Bon, c'était prévisible, je n'ai pas tenu : j'ai décidé de refaire (déjà ?) la peinture ici :). Donc refonte en cours, si j'arrive à tenir le rythme que je me suis imposé, ça devrait venir rapidement… Concrètement, le wireframe est ok, le style aussi, j'ai commencé l'intégration. Donc on devrait pouvoir tenir le choc.
 
 Au passage, j'en profiterai certainement pour passer d'Octopress à Jekyll. Petite explication…
 
-<!-- more -->
+<-- more -->
 
 ## Mes besoins de publication ##
 
@@ -44,7 +45,7 @@ En attendant, je laisse en friche, et je vous propose de réagir notamment sur d
 
 ## Octopress : état des lieux ##
 
-J'ai donc choisi de partir sur [Octopress](http://octopress.org) sur la première mouture de ce blog. Il offre un nombre d'avantages certains : 
+J'ai donc choisi de partir sur [Octopress](http://octopress.org) sur la première mouture de ce blog. Il offre un nombre d'avantages certains :
 
 - Il s'appuie sur [Jekyll](http://jekyllrb.com/) pour la génération des pages. C'est un moteur de génération statique, écrit en Ruby (yeah), utilisant la syntaxe de templates [Liquid](http://liquidmarkup.org/), particulièrement efficace (en tous cas, moi j'aime bien). C'est aussi Jekyll lui propulse les [pages Github](http://pages.github.com/) ;
 - Il arrive pré-configuré pour l'instance de [Jekyll](http://jekyllrb.com/) : c'est un peu l'objectif, Jekyll nu, il faut le configurer, et tout créer. Octopress fourni une config de base sur laquelle démarrer promptement ;

@@ -1,14 +1,20 @@
 ---
-draft: true
+published: false
 layout: post
 title: "Proxy Socks: Go to Tor Network"
-date: 2014-05-12
-category: tools
-tags: sysadmin, tools, archlinux, linux, rpi
 lang: fr
+category: tech
+tags:
+- sysadmin
+- tools
+- linux
+- archlinux
+- raspberrypi
 ---
 
 Suite au précédent article []() (qui date d'un an, je sais, je ne suis pas très assidu, mais je vais changer… promis), j'ai continué à utiliser ce proxy socks qui m'a rendu service à bien des occasions, que ce soit pour contourner des limitations de mon précédent FAI ou pour contourner les PALC chez certains clients un poil trop frileux côté sécurité.
+
+<-- more -->
 
 Récemment, suite à un petit changement d'infra, j'avais supprimé mon petit VPS et je m'étais juré de remonter mon proxy Socks dans mon copious-spare-time®. Du coup, passage en v2 oblige, le proxy utilise désormais [Tor]() pour se connecter et du même coup offrir un accès au subnet à l'oignon. Et pour faire encore plus propre, le tout est désormais propulsé sur un petit RaspberryPi hébergé à domicile.
 
@@ -27,15 +33,15 @@ Première étape, récupérer les sources du projet ALARMPI (_Arch Linux ARM Ras
     curl -O http://archlinuxarm.org/os/ArchLinuxARM-rpi-latest.zip
     curl -O http://archlinuxarm.org/os/ArchLinuxARM-rpi-latest.zip.md5
     unzip ./ArchLinuxARM-rpi-latest.zip
-    
+
 Vérifiez le checksum MD5 au passage, puis brûlez l'image sur la carte SD du RPi. Je suis sous Mac OS, donc une ou deux subtilités avec `dd`, mais globalement vous vous y retrouverez sous n'importe quel Unix :
 
     diskutils list
     # Idenitifiez votre carte SD (probablement /dev/disk2) et démontez-là
     diskutils unmount /dev/disk2s1
-    
+
     sudo dd bs=1024 if=./ArchLinuxARM-rpi-latest/ArchLinuxARM-*.img of=/dev/rdisk2
-    
+
 Insérez ensuite la carte SD dans votre RPi, démarrez-le et connectez-vous en ssh (`root`/`root` par défaut) pour la suite.
 
 ### Configuration RPi / ArchLinux de base
@@ -49,31 +55,31 @@ Il y a des chances que vous utilisiez une carte SD d'une capacité supérieure �
 1. Affichez vos partitions actuelles. La partition `/` devrait faire 1.2G
 
         df -h
-    
+
 2. Ouvrez l'outil de partitionnement sur la carte SD
 
         fdisk /dev/mmcblk0
-    
+
 3. Supprimez la partition racine
 
         Command (m for help): p
- 
+
         Disk /dev/mmcblk0: 7969 MB, 7969177600 bytes, 15564800 sectors
         Units = sectors of 1 * 512 = 512 bytes
         Sector size (logical/physical): 512 bytes / 512 bytes
         I/O size (minimum/optimal): 512 bytes / 512 bytes
         Disk label type: dos
         Disk identifier: 0x00057540
- 
+
                 Device Boot      Start         End      Blocks   Id  System
         /dev/mmcblk0p1            2048      186367       92160    c  W95 FAT32 (LBA)
         /dev/mmcblk0p2          186368     3667967     1740800    5  Extended
         /dev/mmcblk0p5          188416     3667967     1739776   83  Linux
- 
+
         Command (m for help): d
         Partition number (1,2,5, default 5): 2
         Partition 2 is deleted
- 
+
 4. Créez une nouvelle partition étendue utilisant toute l'espace disponible (validez les valeurs par défaut)
 
         Command (m for help): n
@@ -87,7 +93,7 @@ Il y a des chances que vous utilisiez une carte SD d'une capacité supérieure �
         Last sector, +sectors or +size{K,M,G} (186368-15564799, default 15564799):
         Using default value 15564799
         Partition 2 of type Extended and of size 7.3 GiB is set
- 
+
         Command (m for help): n
         Partition type:
            p   primary (1 primary, 1 extended, 2 free)
@@ -99,27 +105,27 @@ Il y a des chances que vous utilisiez une carte SD d'une capacité supérieure �
         Last sector, +sectors or +size{K,M,G} (188416-15564799, default 15564799):
         Using default value 15564799
         Partition 5 of type Linux and of size 7.3 GiB is set
-        
+
 5. Inscrivez la table de partitionnement
 
         Command (m for help): w
         The partition table has been altered!
- 
+
         Calling ioctl() to re-read partition table.
- 
+
         WARNING: Re-reading the partition table failed with error 16: Device or resource busy.
         The kernel still uses the old table. The new table will be used at
         the next reboot or after you run partprobe(8) or kpartx(8)
         Syncing disks.
-        
+
 6. Rebootez
 
         reboot
-        
+
 7. Redimensionnez la partition à chaud
 
         resize2fs /dev/mmcblk0p5
- 
+
 Et voilà ! Votre installation occupe désormais l'intégralité de votre carte SD, on peut passer à la configuration.
 
 #### Utilisateurs
@@ -127,12 +133,12 @@ Et voilà ! Votre installation occupe désormais l'intégralité de votre carte 
 Changez le mot de passe `root` par défaut :
 
     passwd
-    
+
 et ajoutez un compte utilisateur non-root :
 
     useradd -m -G users,wheel -s /bin/bash casper
     passwd casper
-    
+
 Pensez également à transférer votre clé SSH publique vers ce nouvel utilisateur et à désactiver le compte root en SSH (`PermitRootLogin no` dans le fichier `/etc/ssh/sshd_config`).
 
 
@@ -146,14 +152,14 @@ Commencez par mettre à jour votre ArchLinux et installez `packer` pour la gesti
     pacman-key --init
     pkill haveged
     pacman -Rs haveged
-    
+
     pacman -S base-devel binutils
-        
+
     wget https://aur.archlinux.org/packages/pa/packer/packer.tar.gz
     tar xvzf packer.tar.gz
     cd packer
     makepkg -s --asroot -i
-        
+
 #### Config système
 
 Configurez les locales, localtime…
@@ -162,21 +168,21 @@ Configurez les locales, localtime…
     KEYMAP=en
     FONT=lat9w-16
     FONT_MAP=8859-1_to_uni
-    
+
     # Fichier /etc/locale.gen
     en_US.UTF-8 UTF-8
     fr_FR.UTF-8 UTF-8
-    
+
     # Générez les locales
     locale-gen
     localectl set-locale LANG="fr_FR.UTF-8"
-    
+
     # Configurez localtime
     timedatectl set-timezone Europe/Paris
-    
+
     # Configurez le hostname
     hostnamectl set-hostname mymachinename
-    
+
 #### Pensez à faire un backup
 
 Pour le backup, rien de plus simple avec DD : il suffit de dumper une image disque prête à être brûlée à nouveau sur la carte SD, c'est aussi simple que ça. Pensez juste à enregistrer l'image sur un support externe (disque, NFS…) pour ne pas remplir la partition principale (DD enregistrant aussi les secteurs zeros) :
@@ -212,7 +218,7 @@ L'idée est ici non-plus de faire tourner votre proxy socks en local mais sur vo
 Là encore, rien de plus simple (c'est l'avantage avec un outil universellement reconnu) :
 
     packer -S tor
-    
+
 Pour la confugration, il vous suffit d'activer les options suivantes dans votre fichier `/etc/tor/torrc` :
 
 
@@ -226,7 +232,7 @@ Voilà ! Plus qu'à enregistrer et éxecuter le service :
 
     systemctl enable tor.service
     systemctl start tor.service
-    
+
 ### Connecter votre système
 
 Maintenant que le proxy est disponible, il vous suffit de configurer vos applications pour l'utiliser. Deux solutions s'offrent à vous :
@@ -251,7 +257,7 @@ Pour garder un œil sur son foncctionnement et être capable de visualiser rapid
 Pour l'installer, comme toujours, c'est simple comme une ligne de commande :
 
     packer -S arm
-    
+
 Vous pourrez alors lancer l'utilitaire avec la commande `arm` et obtenir la vue suivante :
 
 [INSERT IMAGE]

@@ -1,15 +1,22 @@
 ---
 layout: post
 title: "Petit workflow de publication superflu à l'usage de l'élite et des bien nantis"
-date: 2014-06-22
-category: devops
-tags: git, travis, ci, gh-pages, quality
 lang: fr
+category: tech
+tags:
+- devops
+- git
+- travis
+- continuous integration
+- gh-pages
+- quality
 ---
 
 _J'ose espérer que Desproges me pardonnera cet odieu repompage, mais que voulez-vous, on ne se refait pas…_
 
 Il y a peu, [@nhoizey](https://twitter.com/nhoizey) se posait la question de [l'intérêt de versionner le répertoire de _build_](https://twitter.com/nhoizey/statuses/480039702285008896) dans nos projets, quand celui-ci ne contient finalement que la version distribuable de nos applications, sans aucune valeur ajoutée.
+
+<-- more -->
 
 [Ma réponse](https://twitter.com/m4d_z/statuses/480056775551758336) a tenue en un tweet : pour publier sur une autre branche avec _subtree_. Là, visiblement,  sur ce coup-ci j'en ai perdu plusieurs. C'est donc l'occasion de vous expliquer rapidement ce qui constitue, à mon avis, un _workflow_ de publication propre, simple et efficace[^desproges].
 
@@ -158,8 +165,6 @@ Avec cette procédure, vous ne lancez jamais manuellement le _build_, c'est la C
 Je ne sais pas si vous êtes arrivés jusqu'ici sans perdre le fil, mais si c'est le cas, j'espère que vous aurez au moins appris un petit quelque chose…
 
 Bon dév à tout(e)s !
-
----
 
 [^desproges]: _à l'usage de l'élite et des biens nantis_, donc.
 [^spa]: Single Page Application, une webapp servant une page simple au départ et dont la logique va s'effectuer dans le navigateur.

@@ -1,7 +1,0 @@
-.bundle
-.DS_Store
-.sass-cache
-_deploy
-public
-vendor
-node_modules

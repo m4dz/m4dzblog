@@ -1,16 +1,15 @@
 ---
 layout: post
 title: "Pourquoi un blog ?"
-date: 2013-01-08 13:33
-author: MAD
-comments: true
-categories: en-vrac
+lang: fr
+category: blog
 ---
+
 "Parce que je le vaux bien"® !
 
 Plus sérieusement, parce que c'est l'occasion d'un nouveau départ. Ou plutôt parce qu'en cette période de nouveau départ (qui date de mai dernier, oui, j'ai des départs un peu longuets), j'essaie de remettre de l'ordre dans plusieurs choses.
 
-<!-- more -->
+<-- more -->
 
 ## Previously, in [@madsgraphics](https://twitter.com/madsgraphics) life
 

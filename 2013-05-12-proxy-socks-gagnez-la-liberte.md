@@ -1,14 +1,17 @@
 ---
 layout: post
 title: "Proxy Socks : Gagnez la Liberté"
-date: 2013-05-12 21:31
-comments: false
-categories: sysadmin, outils, linux
+lang: fr
+category: tech
+tags:
+- sysadmin
+- tools
+- linux
 ---
 
 Je suis, comme beaucoup, abonné chez Free depuis de nombreuses années. Je suis, comme certains, victime de ce bridage éhonté du réseau appliqué au streaming sur de plus en plus de plateformes (Youtube en tête, mais Dailymotion morfle aussi, sans compter Facebook, l'AppStore, etc). T'as qu'à changer d'opérateur ! Oui, certes, j'avoue… Mais de mon côté, pas facile de trouver un opérateur digne de confiance sans aller s'engager dans une lutte complexe. En attendant, la situation stagnante nous faisant invariablement reculer[^dupneu], il a bien fallu trouver une solution pour pallier aux difficultés d'accès. Petite proposition…
 
-<!-- more -->
+<-- more -->
 
 J'ai monté cette petite infra en deux heures il y a quelques semaines, et quelle coïncidence tout de même, [@mauriz] lance le [débat quelques jours plus tard] pour finalement [nous offrir ce petit résumé]. Aujourd'hui, c'est [@mariejulien] qui [remet le couvert]. Je vous propose donc ma petite solution maison (celle retenue par [@mauriz] au passage), parce que je suis comme ça moi, je suis un mec sympa :)…
 
