@@ -92,6 +92,8 @@ Pour que le web reste cet endroit unique que nous avons bâti, il nous faut cont
 Le web devient grand, il est toujours plus beau, ne le gâchons pas.
 
 
+_Note: j'expérimente une façon différente de gérer les commentaires sur les billets. Si vous souhaitez participer à la discussion, je vous invite à commenter le [commit du billet dans le dépôt GitHub](https://github.com/m4dz/m4dzblog/commit/15187960b5881671b1d9bbd0d6d909de537c6b6f)._
+
 
 [^twitlate]: que je lis toujours avec 2 jours de retards, on ne se refait pas…
 
